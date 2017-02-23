@@ -17,12 +17,16 @@ The goals / steps of this project are the following:
 
 [image1]: ./examples/grayscale.jpg "Grayscale"
 [image2]: ./test_images/solidYellowCurve_region.jpg
-
+[image3]: ./test_images/solidYellowCurve_edges.jpg
+[image4]: ./test_images/solidYellowCurve_houghlines.jpg
+[image5]: ./test_images/solidYellowCurve_final.jpg
 ---
 
 ### Reflection
 
-###1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
+###1. Pipeline Description
+
+As part of the description, explain how you modified the draw_lines() function.
 
 My pipeline consisted of 5 steps. 
 
@@ -34,15 +38,24 @@ Next, I converted the images to grayscale and applied the a GaussianBlur filer w
 
 Following the filtering, I used the Canny Edge Detection function, with low and high threshold set at 40 and 100. These two values are found to give good results in detected lane lines of interest, not omiting too much details and at the same time, not giving too many false lane line detections. 
 
+![alt text][image3]
+
+Once the edges were detected, I used the HoughLines function to detect straight lines. Multiple parameters were attempted and good results were obtained when the min_line_length and max_line_gap was set to 20 and 10 respectively. With this setting, the function was able to return short lines that may be presented as part of a dashed lane line but not too many irrelavent lines.
+
+![alt text][image4]
+
+Now, given that multiple segments of lines were detected, the next step was to be able to define only 1 straight line on the left hand side of the vehicle and 1 straight line on the right.  
+
+In order to do so, my approach was to group the left lines and the right lines and compute the average gradient and average 'y-intercept'. I also performed some filtering to remove lines of gradient that obviously did not represent the lane lines. 
+
+Once this is done, the left line could be defined as a line with the equation of "y=mx+b".
+I defined two fixed y positions: one being the bottom of the image and around 65% from the top of image. Then the corresponding x position of the end points were calculated.
+
+Finally, instead of modifying the draw_lines, I used the cv2.line function to draw the single lines. 
+
+![alt text][image5]
 
 
-First, I converted the images to grayscale, then I .... 
-
-In order to draw a single line on the left and right lanes, I modified the draw_lines() function by ...
-
-If you'd like to include images to show how the pipeline works, here is how to include an image: 
-
-![alt text][image1]
 
 
 ###2. Identify potential shortcomings with your current pipeline
