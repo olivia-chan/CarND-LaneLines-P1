@@ -16,7 +16,7 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./examples/grayscale.jpg "Grayscale"
-[image2]: ./test_images/
+[image2]: ./test_images/solidYellowCurve.jpg_region.jpg
 
 ---
 
@@ -28,7 +28,10 @@ My pipeline consisted of 5 steps.
 
 Firstly, I defined the region of interest where the lanes are likely to be detected. I chose to use a trapezium shape instead of a triangle to avoid detection of incorrect objects far away in front of the vehicles. In defining the region, instead of using fixed end points value, I have used ratios of the input image size (i.e. bottom boundaries set at ~ 8% of image size from image edge), so that it would work for videos of various size.
 
+![alt text][image2]
+
 Next, I converted the images to grayscale and applied the a GaussianBlur filer with a kernel size of 5 to smoothing out the image.
+
 Following the filtering, I used the Canny Edge Detection function, with low and high threshold set at 40 and 100. These two values are found to give good results in detected lane lines of interest, not omiting too much details and at the same time, not giving too many false lane line detections. 
 
 
