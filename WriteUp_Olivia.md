@@ -58,16 +58,19 @@ Finally, instead of modifying the draw_lines, I used the cv2.line function to dr
 
 
 
-###2. Identify potential shortcomings with your current pipeline
+###2. Potential shortcomings with current pipeline
+With the approach described above, there are certain limitations. 
+
+- Edges detection from a converted grayscale image is the primary way to detect lanes". However, with only this approach, colours are not taken into account. There are possibiltiies that the system will detect lines from irrelvant edges like shadows. If such lines were detected, that will affect the average gradient and intersect outcome, making the final line inaccurate compared to the actual lane marking.
+
+- Also, with the current approach, it may still capture lines that are not lane marking in some cases, as it does not filter out lines that are outside the feasible gradient and intercept range based on the position of the camera in the vehicle. 
 
 
-One potential shortcoming would be what would happen when ... 
+###3. Suggest possible improvements to pipeline
 
-Another shortcoming could be ...
+A possible improvement to address the above shortcoming is to incorporate colour filtering (i.e. only consider lines in certain colours e.g. white or yellow colour) together with edge detection. In this case, lines detected from shadows would be filted out. 
 
+Another possible improvement is to perform additional filtering, e.g. only consider lines with a plausible gradient and intercept range. For example, if a vertical line appears in the middle of the image, that should not be considered as the lane. 
 
-###3. Suggest possible improvements to your pipeline
+Lastly, other possible improvements could be to give more weights to lines that are longer in length and within the right gradient range. Also, given the high refresh rate of the the video, lane mark can only be changing in gradient and intercept gradually. We can keep track of the current line, and give more weight to the lines that are within certain tolerance of the previous detected line to further filter out irrevant lines to increase accuracy of the final result.
 
-A possible improvement would be to ...
-
-Another potential improvement could be to ...
