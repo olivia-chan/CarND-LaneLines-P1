@@ -46,15 +46,11 @@ Once the edges were detected, I used the HoughLines function to detect straight 
 
 Now, given that multiple segments of lines were detected, the next step was to be able to define only 1 straight line on the left hand side of the vehicle and 1 straight line on the right.  
 
-In order to do so, my approach was to group the left lines and the right lines and compute the average gradient and average 'y-intercept'. I also performed some filtering to remove lines of gradient that obviously did not represent the lane lines. 
+In order to do so, my approach was to group the left lines and the right lines and compute the average gradient and average 'y-intercept'. I also performed some filtering to remove lines of gradient that obviously did not represent the lane lines. As the lines could be defined as a line with the equation of "y=mx+b", I defined two fixed y positions: one being the bottom of the image and around 65% from the top of image. Then the corresponding x position of the end points were calculated. If the line intercept is found to be without the right region, i.e. the lines cuts the bottom of the image within the left and right corner, I would then calculate the average gradient and intercept of the lines satisfying the above conditions.
 
-Once this is done, the left line could be defined as a line with the equation of "y=mx+b".
-I defined two fixed y positions: one being the bottom of the image and around 65% from the top of image. Then the corresponding x position of the end points were calculated.
-
-Finally, instead of modifying the draw_lines, I used the cv2.line function to draw the single lines. 
+Finally, instead of modifying the draw_lines, I used the cv2.line function to draw the final single lines. 
 
 ![alt text][image5]
-
 
 
 
@@ -63,8 +59,7 @@ With the approach described above, there are certain limitations.
 
 - Edges detection from a converted grayscale image is the primary way to detect lanes". However, with only this approach, colours are not taken into account. There are possibiltiies that the system will detect lines from irrelvant edges like shadows. If such lines were detected, that will affect the average gradient and intersect outcome, making the final line inaccurate compared to the actual lane marking.
 
-- Also, with the current approach, it may still capture lines that are not lane marking in some cases, as it does not filter out lines that are outside the feasible gradient and intercept range based on the position of the camera in the vehicle. 
-
+- Also, with the current approach, the system does not keep track of the line defined in the last frame. As a result, there is possibiltiy to detect a line in the current frame which is very much different from the line defined in the last frame, which is in reality not feasible.
 
 ###3. Suggest possible improvements to pipeline
 
